@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: llm-router
+  datasource:
+    url: jdbc:sqlite:${SQLITE_PATH:./data/router.db}
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+server:
+  port: 8000
+
+router:
+  providers:
+    openai-api-key: ${OPENAI_API_KEY:}
+    anthropic-api-key: ${ANTHROPIC_API_KEY:}
+    ollama-base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+  tiers:
+    cheap-max: 0.35
+    mid-max: 0.70
+  quality-gate:
+    threshold: 0.65
+    enable-reroute: true
+    reroute-max-attempts: 1
+  classifier:
+    sidecar-url: ${CLASSIFIER_URL:http://localhost:8001}
+    timeout-ms: 3000
+
+logging:
+  level:
+    com.llmrouter: INFO
+    org.hibernate: WARN

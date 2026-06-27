@@ -18,9 +18,9 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 2 — Data Models
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | Java records: `ChatMessage`, `ChatCompletionRequest`, `ChatCompletionResponse`, `RouterMeta`, `Usage` | OpenAI-compatible |
-| ⚪ | `RequestLog.java` — `@Entity` | Full routing metadata per request |
-| ⚪ | `RequestLogRepository.java` | `JpaRepository` + custom stats queries |
+| ✅ | Java records: `ChatMessage`, `ChatCompletionRequest`, `ChatCompletionResponse`, `RouterMeta`, `Usage` | OpenAI-compatible |
+| ✅ | `RequestLog.java` — `@Entity` | Full routing metadata per request |
+| ✅ | `RequestLogRepository.java` | `JpaRepository` + custom stats queries |
 
 ### Phase 3 — Provider Adapters
 | Status | Task | Notes |
@@ -89,3 +89,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ## Completed
 
 - ✅ Project scaffold (Phase 1): pom.xml, RouterProperties, application.yml, LlmRouterApplication
+- ✅ Data models (Phase 2): ChatMessage, ChatCompletionRequest, ChatCompletionResponse, RouterMeta, Usage, RequestLog, RequestLogRepository

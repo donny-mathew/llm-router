@@ -35,11 +35,11 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 4 — Classifier Sidecar (Python)
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | `classifier-sidecar/features.py` | 11-feature vector extraction |
-| ⚪ | `classifier-sidecar/scorer.py` | Heuristic + sklearn modes |
-| ⚪ | `classifier-sidecar/main.py` | FastAPI `POST /score` |
-| ⚪ | `classifier-sidecar/train.py` | Offline ML training script |
-| ⚪ | `classifier-sidecar/Dockerfile` | python:3.11-slim, port 8001 |
+| ✅ | `classifier-sidecar/features.py` | 11-feature vector extraction |
+| ✅ | `classifier-sidecar/scorer.py` | Heuristic + sklearn modes |
+| ✅ | `classifier-sidecar/main.py` | FastAPI `POST /score` |
+| ✅ | `classifier-sidecar/train.py` | Offline ML training script |
+| ✅ | `classifier-sidecar/Dockerfile` | python:3.11-slim, port 8001 |
 
 ### Phase 5 — Classifier Client (Java)
 | Status | Task | Notes |
@@ -91,3 +91,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 - ✅ Project scaffold (Phase 1): pom.xml, RouterProperties, application.yml, LlmRouterApplication
 - ✅ Data models (Phase 2): ChatMessage, ChatCompletionRequest, ChatCompletionResponse, RouterMeta, Usage, RequestLog, RequestLogRepository
 - ✅ Provider adapters (Phase 3): LlmProvider interface, WebClientConfig, OpenAiProvider, AnthropicProvider, OllamaProvider, ProviderRegistry with tier fallback chain
+- ✅ Classifier sidecar (Phase 4): features.py, scorer.py (heuristic + sklearn), FastAPI /score endpoint, train.py, Dockerfile

@@ -25,12 +25,12 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 3 — Provider Adapters
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | `LlmProvider.java` — interface | `Mono<ProviderResponse> complete()` |
-| ⚪ | `WebClientConfig.java` — one WebClient bean per provider | Auth headers, timeouts |
-| ⚪ | `OpenAiProvider.java` | WebClient → OpenAI `/v1/chat/completions` |
-| ⚪ | `AnthropicProvider.java` | WebClient → Anthropic `/v1/messages`; translate system role |
-| ⚪ | `OllamaProvider.java` | WebClient → Ollama OpenAI-compat endpoint |
-| ⚪ | `ProviderRegistry.java` | Tier map + fallback chain |
+| ✅ | `LlmProvider.java` — interface | `Mono<ProviderResponse> complete()` |
+| ✅ | `WebClientConfig.java` — one WebClient bean per provider | Auth headers, timeouts |
+| ✅ | `OpenAiProvider.java` | WebClient → OpenAI `/v1/chat/completions` |
+| ✅ | `AnthropicProvider.java` | WebClient → Anthropic `/v1/messages`; translate system role |
+| ✅ | `OllamaProvider.java` | WebClient → Ollama OpenAI-compat endpoint |
+| ✅ | `ProviderRegistry.java` | Tier map + fallback chain |
 
 ### Phase 4 — Classifier Sidecar (Python)
 | Status | Task | Notes |
@@ -90,3 +90,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 
 - ✅ Project scaffold (Phase 1): pom.xml, RouterProperties, application.yml, LlmRouterApplication
 - ✅ Data models (Phase 2): ChatMessage, ChatCompletionRequest, ChatCompletionResponse, RouterMeta, Usage, RequestLog, RequestLogRepository
+- ✅ Provider adapters (Phase 3): LlmProvider interface, WebClientConfig, OpenAiProvider, AnthropicProvider, OllamaProvider, ProviderRegistry with tier fallback chain

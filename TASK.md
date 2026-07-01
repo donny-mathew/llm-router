@@ -44,7 +44,7 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 5 — Classifier Client (Java)
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | `ClassifierClient.java` | WebClient → sidecar; Java heuristic fallback |
+| ✅ | `ClassifierClient.java` | WebClient → sidecar; Java heuristic fallback |
 
 ### Phase 6 — Evaluator
 | Status | Task | Notes |
@@ -92,3 +92,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 - ✅ Data models (Phase 2): ChatMessage, ChatCompletionRequest, ChatCompletionResponse, RouterMeta, Usage, RequestLog, RequestLogRepository
 - ✅ Provider adapters (Phase 3): LlmProvider interface, WebClientConfig, OpenAiProvider, AnthropicProvider, OllamaProvider, ProviderRegistry with tier fallback chain
 - ✅ Classifier sidecar (Phase 4): features.py, scorer.py (heuristic + sklearn), FastAPI /score endpoint, train.py, Dockerfile
+- ✅ Classifier client (Phase 5): ClassifierClient with sidecar WebClient + Java heuristic fallback

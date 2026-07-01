@@ -49,8 +49,8 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 6 — Evaluator
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | `DeterministicScorer.java` | Length, refusal, finish_reason, latency |
-| ⚪ | `LlmJudge.java` | claude-haiku-4-5 judge; only on quality failures |
+| ✅ | `DeterministicScorer.java` | Length, refusal, finish_reason, latency |
+| ✅ | `LlmJudge.java` | claude-haiku-4-5 judge; only on quality failures |
 
 ### Phase 7 — Router Pipeline
 | Status | Task | Notes |
@@ -93,3 +93,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 - ✅ Provider adapters (Phase 3): LlmProvider interface, WebClientConfig, OpenAiProvider, AnthropicProvider, OllamaProvider, ProviderRegistry with tier fallback chain
 - ✅ Classifier sidecar (Phase 4): features.py, scorer.py (heuristic + sklearn), FastAPI /score endpoint, train.py, Dockerfile
 - ✅ Classifier client (Phase 5): ClassifierClient with sidecar WebClient + Java heuristic fallback
+- ✅ Evaluator (Phase 6): DeterministicScorer (0..1, no LLM calls), LlmJudge (claude-haiku-4-5, fires only on quality failures)

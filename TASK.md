@@ -55,9 +55,9 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 7 — Router Pipeline
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | `RouterService.java` | Full reactive pipeline |
-| ⚪ | `RouterController.java` | `POST /v1/chat/completions`, `/v1/models`, `/health` |
-| ⚪ | `AdminController.java` | `/admin/stats`, `/admin/train-classifier` |
+| ✅ | `RouterService.java` | Full reactive pipeline |
+| ✅ | `RouterController.java` | `POST /v1/chat/completions`, `/v1/models`, `/health` |
+| ✅ | `AdminController.java` | `/admin/stats`, `/admin/train-classifier` |
 
 ### Phase 8 — Structured Logging
 | Status | Task | Notes |
@@ -94,3 +94,4 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 - ✅ Classifier sidecar (Phase 4): features.py, scorer.py (heuristic + sklearn), FastAPI /score endpoint, train.py, Dockerfile
 - ✅ Classifier client (Phase 5): ClassifierClient with sidecar WebClient + Java heuristic fallback
 - ✅ Evaluator (Phase 6): DeterministicScorer (0..1, no LLM calls), LlmJudge (claude-haiku-4-5, fires only on quality failures)
+- ✅ Router pipeline (Phase 7): RouterService (full reactive Mono chain), RouterController (/v1/chat/completions, /v1/models, /health), AdminController (/admin/stats, /admin/train-classifier)

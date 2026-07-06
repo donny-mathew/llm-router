@@ -6,6 +6,7 @@ import com.llmrouter.classifier.ClassifierClient;
 import com.llmrouter.config.RouterProperties;
 import com.llmrouter.evaluator.DeterministicScorer;
 import com.llmrouter.evaluator.LlmJudge;
+import com.llmrouter.logging.StructuredLogger;
 import com.llmrouter.model.ChatCompletionRequest;
 import com.llmrouter.model.ChatCompletionResponse;
 import com.llmrouter.model.RouterMeta;
@@ -31,6 +32,7 @@ public class RouterService {
     private final DeterministicScorer deterministicScorer;
     private final LlmJudge llmJudge;
     private final RequestLogRepository logRepository;
+    private final StructuredLogger structuredLogger;
     private final ObjectMapper objectMapper;
     private final RouterProperties props;
 
@@ -40,6 +42,7 @@ public class RouterService {
             DeterministicScorer deterministicScorer,
             LlmJudge llmJudge,
             RequestLogRepository logRepository,
+            StructuredLogger structuredLogger,
             ObjectMapper objectMapper,
             RouterProperties props) {
         this.classifierClient = classifierClient;
@@ -47,6 +50,7 @@ public class RouterService {
         this.deterministicScorer = deterministicScorer;
         this.llmJudge = llmJudge;
         this.logRepository = logRepository;
+        this.structuredLogger = structuredLogger;
         this.objectMapper = objectMapper;
         this.props = props;
     }
@@ -143,6 +147,7 @@ public class RouterService {
 
         saveLog(request, providerResponse.response(), provider, tier, complexityScore,
                 qualityScore, rerouted, rerouteReason, judgeVerdict);
+        structuredLogger.logRequest(providerResponse.response().id(), meta);
 
         return Mono.just(finalResponse);
     }

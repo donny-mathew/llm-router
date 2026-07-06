@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProfile name="default,prod">
+        <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_DIR:-./data/logs}/router.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR:-./data/logs}/router.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
+            </rollingPolicy>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeMdcKeyName>request_id</includeMdcKeyName>
+                <includeMdcKeyName>tier</includeMdcKeyName>
+                <includeMdcKeyName>provider</includeMdcKeyName>
+                <includeMdcKeyName>model</includeMdcKeyName>
+                <includeMdcKeyName>complexity_score</includeMdcKeyName>
+                <includeMdcKeyName>quality_score</includeMdcKeyName>
+                <includeMdcKeyName>latency_ms</includeMdcKeyName>
+                <includeMdcKeyName>cost_usd</includeMdcKeyName>
+                <includeMdcKeyName>rerouted</includeMdcKeyName>
+            </encoder>
+        </appender>
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="JSON_FILE"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.springframework" level="INFO"/>
+    </springProfile>
+
+</configuration>

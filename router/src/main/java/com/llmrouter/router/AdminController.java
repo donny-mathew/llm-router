@@ -17,6 +17,7 @@ import java.util.Map;
 public class AdminController {
 
     private static final Logger log = LoggerFactory.getLogger(AdminController.class);
+    private static final long TRAINING_TIMEOUT_MINUTES = 10;
 
     private final RequestLogRepository logRepository;
 
@@ -61,9 +62,17 @@ public class AdminController {
                     "--db", "../data/router.db",
                     "--out", "model/complexity_model.joblib")
                     .directory(new java.io.File("../classifier-sidecar"))
-                    .redirectErrorStream(true);
+                    .redirectErrorStream(true)
+                    // Unread pipe output can fill the OS buffer and hang the child; send it to a file.
+                    .redirectOutput(new java.io.File("../classifier-sidecar/train.log"));
             Process process = pb.start();
-            int exit = process.waitFor();
+            if (!process.waitFor(TRAINING_TIMEOUT_MINUTES, java.util.concurrent.TimeUnit.MINUTES)) {
+                process.destroyForcibly();
+                log.warn("Classifier training timed out after {} minutes", TRAINING_TIMEOUT_MINUTES);
+                return ResponseEntity.<Map<String, String>>internalServerError()
+                        .body(Map.of("status", "error", "message", "Training timed out"));
+            }
+            int exit = process.exitValue();
             if (exit == 0) {
                 log.info("Classifier training completed successfully");
                 return ResponseEntity.ok(Map.of("status", "ok", "message", "Training completed"));

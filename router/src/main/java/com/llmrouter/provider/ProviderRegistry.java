@@ -49,6 +49,7 @@ public class ProviderRegistry {
         LlmProvider provider = providers.get(index);
         log.debug("Trying provider {} ({})", provider.getName(), provider.getModelId());
         return provider.complete(request)
+                .map(response -> response.withProvider(provider))
                 .onErrorResume(WebClientResponseException.class, ex -> {
                     log.warn("Provider {} failed ({}), falling back", provider.getName(), ex.getStatusCode());
                     return tryInOrder(providers, index + 1, request);
@@ -57,11 +58,6 @@ public class ProviderRegistry {
                     log.warn("Provider {} error: {}, falling back", provider.getName(), ex.getMessage());
                     return tryInOrder(providers, index + 1, request);
                 });
-    }
-
-    public LlmProvider getFirstProvider(String tier) {
-        List<LlmProvider> providers = tierMap.getOrDefault(tier, tierMap.get("powerful"));
-        return providers.get(0);
     }
 
     public String upgradeTier(String current) {

@@ -74,7 +74,7 @@ public class RouterService {
 
         return providerRegistry.complete(tier, request)
                 .flatMap(providerResponse -> {
-                    LlmProvider provider = providerRegistry.getFirstProvider(tier);
+                    LlmProvider provider = providerResponse.provider();
                     double qualityScore = deterministicScorer.score(
                             request, providerResponse.response(), providerResponse.latencyMs());
 
@@ -94,6 +94,7 @@ public class RouterService {
                                                 .flatMap(finalResponse -> {
                                                     // Save the original (failed) attempt log with reroute flag
                                                     saveLog(request, providerResponse.response(),
+                                                            providerResponse.latencyMs(),
                                                             provider, tier, complexityScore,
                                                             qualityScore, true, verdict.reason(),
                                                             toJson(verdict));
@@ -145,7 +146,8 @@ public class RouterService {
                 providerResponse.response().usage(),
                 meta);
 
-        saveLog(request, providerResponse.response(), provider, tier, complexityScore,
+        saveLog(request, providerResponse.response(), providerResponse.latencyMs(),
+                provider, tier, complexityScore,
                 qualityScore, rerouted, rerouteReason, judgeVerdict);
         structuredLogger.logRequest(providerResponse.response().id(), meta);
 
@@ -155,6 +157,7 @@ public class RouterService {
     private void saveLog(
             ChatCompletionRequest request,
             ChatCompletionResponse response,
+            long latencyMs,
             LlmProvider provider,
             String tier,
             double complexityScore,
@@ -178,7 +181,7 @@ public class RouterService {
                 .responseJson(toJson(response))
                 .promptTokens(response.usage() != null ? response.usage().promptTokens() : 0)
                 .completionTokens(response.usage() != null ? response.usage().completionTokens() : 0)
-                .latencyMs(0) // latency captured in ProviderResponse; passed via buildAndLog in full impl
+                .latencyMs(latencyMs)
                 .estimatedCostUsd(cost)
                 .qualityScore(qualityScore)
                 .rerouted(rerouted)

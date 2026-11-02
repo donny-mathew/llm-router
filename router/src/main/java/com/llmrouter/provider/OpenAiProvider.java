@@ -37,9 +37,15 @@ public class OpenAiProvider implements LlmProvider {
     @Override
     public Mono<ProviderResponse> complete(ChatCompletionRequest request) {
         long start = System.currentTimeMillis();
+        // Pin the model this adapter is priced for, and disable streaming (the router
+        // parses a single JSON body). Otherwise the client's "model" passes straight through.
+        ChatCompletionRequest body = new ChatCompletionRequest(
+                MODEL_ID, request.messages(), request.temperature(), request.maxTokens(),
+                false, request.user(), request.tools(), request.toolChoice(),
+                request.responseFormat(), request.metadata());
         return webClient.post()
                 .uri("/v1/chat/completions")
-                .bodyValue(request)
+                .bodyValue(body)
                 .retrieve()
                 .bodyToMono(OpenAiResponse.class)
                 .map(r -> {

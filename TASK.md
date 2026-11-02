@@ -81,7 +81,8 @@ Build an intelligent LLM routing proxy that routes each request to the cheapest 
 ### Phase 11 — Tests
 | Status | Task | Notes |
 |--------|------|-------|
-| ⚪ | Unit tests: `DeterministicScorerTest`, `ProviderRegistryTest`, `ClassifierClientFallbackTest` | Mock WebClient |
+| ✅ | Unit tests: `DeterministicScorerTest`, `ProviderRegistryTest`, `RouterServiceTest` | Stub ExchangeFunction + Mockito |
+| ⚪ | Unit test: `ClassifierClientFallbackTest` | |
 | ⚪ | Integration: `RouterControllerTest` | `@SpringBootTest` + WebTestClient + WireMock + H2 |
 
 ---
